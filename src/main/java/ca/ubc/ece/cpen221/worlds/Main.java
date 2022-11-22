@@ -9,6 +9,7 @@ import ca.ubc.ece.cpen221.worlds.items.Grass;
 import ca.ubc.ece.cpen221.worlds.items.animals.Fox;
 import ca.ubc.ece.cpen221.worlds.items.animals.Gnat;
 import ca.ubc.ece.cpen221.worlds.items.animals.Rabbit;
+import ca.ubc.ece.cpen221.worlds.items.vehicles.Car;
 
 import javax.swing.SwingUtilities;
 
@@ -59,6 +60,7 @@ public class Main {
         addGnats(world);
         addRabbits(world);
         addFoxes(world);
+        addCars(world);
         // TODO: You may add your own creatures here!
     }
 
@@ -95,6 +97,15 @@ public class Main {
             Rabbit rabbit = new Rabbit(rabbitAI, loc);
             world.addItem(rabbit);
             world.addActor(rabbit);
+        }
+    }
+
+    private void addCars(World world) {
+        for (int i = 0; i < INITIAL_CARS; i++) {
+            Location loc = Util.getRandomEmptyLocation(world);
+            Car car = new Car(loc);
+            world.addItem(car);
+            world.addActor(car);
         }
     }
 }

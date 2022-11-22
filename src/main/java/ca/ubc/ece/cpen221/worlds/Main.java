@@ -5,6 +5,7 @@ import ca.ubc.ece.cpen221.worlds.ai.RabbitAI;
 import ca.ubc.ece.cpen221.worlds.core.WorldImpl;
 import ca.ubc.ece.cpen221.worlds.core.WorldUI;
 import ca.ubc.ece.cpen221.worlds.items.Gardener;
+import ca.ubc.ece.cpen221.worlds.items.GasStation;
 import ca.ubc.ece.cpen221.worlds.items.Grass;
 import ca.ubc.ece.cpen221.worlds.items.animals.Fox;
 import ca.ubc.ece.cpen221.worlds.items.animals.Gnat;
@@ -37,6 +38,7 @@ public class Main {
     static final int INITIAL_MEN = INITIAL_GRASS / 150;
     static final int INITIAL_WOMEN = INITIAL_GRASS / 100;
     static final int INITIAL_HUNTERS = INITIAL_GRASS / 150;
+    static final int INITIAL_GAS = INITIAL_GRASS / 100;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -61,6 +63,7 @@ public class Main {
         addRabbits(world);
         addFoxes(world);
         addCars(world);
+        addGasStation(world);
         // TODO: You may add your own creatures here!
     }
 
@@ -106,6 +109,13 @@ public class Main {
             Car car = new Car(loc);
             world.addItem(car);
             world.addActor(car);
+        }
+    }
+
+    private void addGasStation(World world) {
+        for (int i = 0; i < INITIAL_GAS; i++) {
+            Location loc = Util.getRandomEmptyLocation(world);
+            world.addItem(new GasStation(loc));
         }
     }
 }

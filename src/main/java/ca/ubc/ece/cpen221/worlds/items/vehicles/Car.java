@@ -8,6 +8,8 @@ import ca.ubc.ece.cpen221.worlds.commands.Command;
 import ca.ubc.ece.cpen221.worlds.commands.DestroyCommand;
 import ca.ubc.ece.cpen221.worlds.commands.MoveCommand;
 import ca.ubc.ece.cpen221.worlds.commands.WaitCommand;
+import ca.ubc.ece.cpen221.worlds.items.GasStation;
+import ca.ubc.ece.cpen221.worlds.items.Grass;
 import ca.ubc.ece.cpen221.worlds.items.Item;
 import ca.ubc.ece.cpen221.worlds.items.MoveableItem;
 
@@ -178,6 +180,17 @@ public class Car implements Vehicle {
         Direction dir = direction;
         Location targetLocation = new Location(this.getLocation(), dir);
         Set<Item> items = world.searchSurroundings(location, VIEW_RANGE);
+        this.energy--; // Loses 1 energy regardless of action.
+
+        for(Item i : items){
+            if(i.getClass().equals(GasStation.class)){
+                cooldown += 2;
+
+                if(cooldown > 10 && energy < MAX_ENERGY / 10){
+                    energy = MAX_ENERGY;
+                }
+            }
+        }
 
         if (Util.isValidLocation(world, targetLocation) &&
                 Util.isLocationEmpty(world, targetLocation)) {
@@ -187,10 +200,14 @@ public class Car implements Vehicle {
             return new MoveCommand(this, targetLocation);//move forward and accelerate if nothing in front
         }else if(cooldown > 10){
             direction = Util.getRandomDirection();//change direction if slow enough
+            return new WaitCommand();
         }else {
             for(Item i : items){
                 if(i.getLocation().equals(targetLocation)){
-                    cooldown += 3;
+                    if(!i.getClass().equals(Grass.class)){
+                        cooldown += 2;
+                    }
+
                     return new DestroyCommand(this, i);//hit the obstacle and slow down
                 }
             }

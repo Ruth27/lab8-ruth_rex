@@ -1,11 +1,13 @@
 package ca.ubc.ece.cpen221.worlds;
 
+import ca.ubc.ece.cpen221.worlds.ai.CatAI;
 import ca.ubc.ece.cpen221.worlds.ai.FoxAI;
 import ca.ubc.ece.cpen221.worlds.ai.RabbitAI;
 import ca.ubc.ece.cpen221.worlds.core.WorldImpl;
 import ca.ubc.ece.cpen221.worlds.core.WorldUI;
 import ca.ubc.ece.cpen221.worlds.items.Gardener;
 import ca.ubc.ece.cpen221.worlds.items.Grass;
+import ca.ubc.ece.cpen221.worlds.items.animals.Cat;
 import ca.ubc.ece.cpen221.worlds.items.animals.Fox;
 import ca.ubc.ece.cpen221.worlds.items.animals.Gnat;
 import ca.ubc.ece.cpen221.worlds.items.animals.Rabbit;
@@ -26,6 +28,7 @@ public class Main {
     static final int INITIAL_GRASS = X_DIM * Y_DIM / SPACES_PER_GRASS;
     static final int INITIAL_GNATS = INITIAL_GRASS / 4;
     static final int INITIAL_RABBITS = INITIAL_GRASS / 4;
+    static final int INITIAL_CATS = INITIAL_GRASS / 4;
     static final int INITIAL_FOXES = INITIAL_GRASS / 32;
     static final int INITIAL_TIGERS = INITIAL_GRASS / 32;
     static final int INITIAL_BEARS = INITIAL_GRASS / 40;
@@ -59,6 +62,7 @@ public class Main {
         addGnats(world);
         addRabbits(world);
         addFoxes(world);
+        addCats(world);
         // TODO: You may add your own creatures here!
     }
 
@@ -66,6 +70,16 @@ public class Main {
         for (int i = 0; i < INITIAL_GRASS; i++) {
             Location loc = Util.getRandomEmptyLocation(world);
             world.addItem(new Grass(loc));
+        }
+    }
+
+    private void addCats(World world) {
+        CatAI catAI = new CatAI();
+        for (int i = 0; i < INITIAL_CATS; i++) {
+            Location loc = Util.getRandomEmptyLocation(world);
+            Cat cat = new Cat(catAI, loc);
+            world.addItem(cat);
+            world.addActor(cat);
         }
     }
 

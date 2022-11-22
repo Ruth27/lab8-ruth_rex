@@ -99,8 +99,7 @@ public class WorldImpl implements World {
                     actorWait.put(actor, actor.getCoolDownPeriod());
                     try {
                         command.execute(this);
-                    }
-                    catch (InvalidCommandException e) {
+                    } catch (InvalidCommandException e) {
                         e.printStackTrace();
                     }
                 } else {

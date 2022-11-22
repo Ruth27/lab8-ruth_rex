@@ -11,7 +11,6 @@ import ca.ubc.ece.cpen221.worlds.commands.WaitCommand;
 import ca.ubc.ece.cpen221.worlds.items.Item;
 import ca.ubc.ece.cpen221.worlds.items.animals.ArenaAnimal;
 
-import java.util.Iterator;
 import java.util.Set;
 
 public class ArenaAnimalAI implements AI {
@@ -26,9 +25,7 @@ public class ArenaAnimalAI implements AI {
             return false;
         }
         Set<Item> possibleMoves = world.searchSurroundings(animal);
-        Iterator<Item> it = possibleMoves.iterator();
-        while (it.hasNext()) {
-            Item item = it.next();
+        for (Item item : possibleMoves) {
             if (item.getLocation().equals(location)) {
                 return false;
             }
@@ -42,17 +39,15 @@ public class ArenaAnimalAI implements AI {
         Location targetLocation = new Location(animal.getLocation(), dir);
         Set<Item> possibleEats = world.searchSurroundings(animal);
         Location current = animal.getLocation();
-        Iterator<Item> it = possibleEats.iterator();
-        while (it.hasNext()) {
-            Item item = it.next();
+        for (Item item : possibleEats) {
             if ((item.getName().equals("Gnat") || item.getName().equals("Rabbit"))
                 && (current.getDistance(item.getLocation()) == 1)) {
                 return new EatCommand(animal, item); // arena animals eat gnats
                 // and rabbits
             }
         }
-        if (Util.isValidLocation(world, targetLocation) &&
-            this.isLocationEmpty(world, animal, targetLocation)) {
+        if (Util.isValidLocation(world, targetLocation)
+            && this.isLocationEmpty(world, animal, targetLocation)) {
             return new MoveCommand(animal, targetLocation);
         }
         return new WaitCommand();

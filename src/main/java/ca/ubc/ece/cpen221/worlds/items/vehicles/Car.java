@@ -13,6 +13,7 @@ import ca.ubc.ece.cpen221.worlds.items.Grass;
 import ca.ubc.ece.cpen221.worlds.items.Item;
 import ca.ubc.ece.cpen221.worlds.items.MoveableItem;
 import ca.ubc.ece.cpen221.worlds.items.animals.ArenaAnimal;
+import ca.ubc.ece.cpen221.worlds.items.animals.Gnat;
 
 import javax.swing.*;
 import java.util.Set;

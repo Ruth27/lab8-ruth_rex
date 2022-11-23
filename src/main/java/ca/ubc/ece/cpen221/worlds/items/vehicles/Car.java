@@ -12,6 +12,7 @@ import ca.ubc.ece.cpen221.worlds.items.GasStation;
 import ca.ubc.ece.cpen221.worlds.items.Grass;
 import ca.ubc.ece.cpen221.worlds.items.Item;
 import ca.ubc.ece.cpen221.worlds.items.MoveableItem;
+import ca.ubc.ece.cpen221.worlds.items.animals.ArenaAnimal;
 
 import javax.swing.*;
 import java.util.Set;
@@ -27,6 +28,7 @@ public class Car implements Vehicle {
 
     private static final int INITIAL_SPEED = 50;
     private static final Direction INITIAL_DIRECTION = Util.getRandomDirection();
+    private static final int MAX_COOLDOWN = 15;
 
     //private final AI ai;
 
@@ -204,8 +206,8 @@ public class Car implements Vehicle {
         }else {
             for(Item i : items){
                 if(i.getLocation().equals(targetLocation)){
-                    if(!i.getClass().equals(Grass.class)){
-                        cooldown += 2;
+                    if(cooldown < MAX_COOLDOWN){
+                        cooldown++;
                     }
 
                     return new DestroyCommand(this, i);//hit the obstacle and slow down

@@ -11,6 +11,7 @@ import ca.ubc.ece.cpen221.worlds.items.animals.Fox;
 import ca.ubc.ece.cpen221.worlds.items.animals.Gnat;
 import ca.ubc.ece.cpen221.worlds.items.animals.Rabbit;
 import ca.ubc.ece.cpen221.worlds.items.vehicles.Car;
+import ca.ubc.ece.cpen221.worlds.items.vehicles.Truck;
 
 import javax.swing.SwingUtilities;
 
@@ -32,8 +33,8 @@ public class Main {
     static final int INITIAL_TIGERS = INITIAL_GRASS / 32;
     static final int INITIAL_BEARS = INITIAL_GRASS / 40;
     static final int INITIAL_HYENAS = INITIAL_GRASS / 32;
-    static final int INITIAL_CARS = INITIAL_GRASS / 100;
-    static final int INITIAL_TRUCKS = INITIAL_GRASS / 150;
+    static final int INITIAL_CARS = INITIAL_GRASS / 25;
+    static final int INITIAL_TRUCKS = INITIAL_GRASS / 50;
     static final int INITIAL_MOTORCYCLES = INITIAL_GRASS / 64;
     static final int INITIAL_MEN = INITIAL_GRASS / 150;
     static final int INITIAL_WOMEN = INITIAL_GRASS / 100;
@@ -63,6 +64,7 @@ public class Main {
         addRabbits(world);
         addFoxes(world);
         addCars(world);
+        addTrucks(world);
         addGasStation(world);
         // TODO: You may add your own creatures here!
     }
@@ -109,6 +111,15 @@ public class Main {
             Car car = new Car(loc);
             world.addItem(car);
             world.addActor(car);
+        }
+    }
+
+    private void addTrucks(World world) {
+        for (int i = 0; i < INITIAL_TRUCKS; i++) {
+            Location loc = Util.getRandomEmptyLocation(world);
+            Truck truck = new Truck(loc);
+            world.addItem(truck);
+            world.addActor(truck);
         }
     }
 

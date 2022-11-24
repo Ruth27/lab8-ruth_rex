@@ -18,51 +18,22 @@ import ca.ubc.ece.cpen221.worlds.items.animals.Gnat;
 import javax.swing.*;
 import java.util.Set;
 
-public class Car implements Vehicle {
-    private static final int INITIAL_ENERGY = 1000;
-    private static final int MAX_ENERGY = 1200;
-    private static final int STRENGTH = 1000;
-
-    private static final int VIEW_RANGE = 10;
-    private static final int COOLDOWN = 10;
+public class Car extends AbstractVehicle {
+    protected static final int INITIAL_ENERGY = 1000;
+    protected static final int MAX_ENERGY = 1200;
+    protected static final int STRENGTH = 1000;
+    protected static final int COOLDOWN = 10;
+    protected static final Direction INITIAL_DIRECTION = Util.getRandomDirection();
     private static final ImageIcon carImage = Util.loadImage("cars.gif");
 
-    private static final int INITIAL_SPEED = 50;
-    private static final Direction INITIAL_DIRECTION = Util.getRandomDirection();
-    private static final int MAX_COOLDOWN = 15;
-
-    //private final AI ai;
-
-    private Location location;
-    private int energy;
-    private Direction direction;
-    private int cooldown;
-
     public Car(Location initialLocation) {
-        this.location = initialLocation;
-        this.energy = INITIAL_ENERGY;
-        this.direction = INITIAL_DIRECTION;
-        this.cooldown = COOLDOWN;
-    }
+        super.MAX_ENERGY = MAX_ENERGY;
+        super.STRENGTH = STRENGTH;
 
-    /**
-     * The energy that this food contains as a plant
-     *
-     * @return plant energy of this food
-     */
-    @Override
-    public int getPlantCalories() {
-        return 0;
-    }
-
-    /**
-     * The energy that this food contains as an animal
-     *
-     * @return meat energy of this food
-     */
-    @Override
-    public int getMeatCalories() {
-        return 0;
+        super.location = initialLocation;
+        super.energy = INITIAL_ENERGY;
+        super.direction = INITIAL_DIRECTION;
+        super.cooldown = COOLDOWN;
     }
 
     /**
@@ -83,141 +54,5 @@ public class Car implements Vehicle {
     @Override
     public String getName() {
         return "Car";
-    }
-
-    /**
-     * Gets the location of this Item in the World.
-     *
-     * @return the location in the world
-     */
-    @Override
-    public Location getLocation() {
-        return location;
-    }
-
-    /**
-     * Returns the strength of this Item. Generally, if an item possesses
-     * greater strength than another, then it can eliminate the other. For
-     * example, a {@link Vehicle} can run over everything that has a lower
-     * strength.
-     *
-     * @return the strength of this Item
-     */
-    @Override
-    public int getStrength() {
-        return STRENGTH;
-    }
-
-    /**
-     * Causes this Item to lose energy. The consequences of this varies for
-     * different types of Items.
-     * <ul>
-     * <li>{@link Grass} and {@link Gnat} die when they lose energy.</li>
-     * <li>{@link ArenaAnimal} reduces its energy level and it dies if its
-     * energy level drops below or equal to 0</li>
-     * </ul>
-     *
-     * @param energy the amount of energy lost
-     */
-    @Override
-    public void loseEnergy(int energy) {
-        this.energy -= energy;
-    }
-
-    /**
-     * Returns whether or not this Item is dead. If this Item is dead, it will
-     * be removed from the World. An item is dead if it is eaten, run over by a
-     * Vehicle, loses all its energy and energy level drops below or equal 0,
-     * etc.
-     *
-     * @return true if this Item is dead, false if alive
-     */
-    @Override
-    public boolean isDead() {
-        return energy <= 0;
-    }
-
-    /**
-     * Move to the target location. The <code> targetLocation </code> must be
-     * valid and empty.
-     *
-     * @param targetLocation the location that this item is moving to
-     */
-    @Override
-    public void moveTo(Location targetLocation) {
-        location = targetLocation;
-    }
-
-    /**
-     * Returns the maximum distance that this item can move in one step. For
-     * example, a {@link MoveableItem} with moving range 1 can only move to
-     * adjacent locations.
-     *
-     * @return the maximum moving distance
-     */
-    @Override
-    public int getMovingRange() {
-        return 10;
-    }
-
-    /**
-     * Returns the cooldown period between two consecutive actions. This
-     * represents the number of steps passed between two actions.
-     *
-     * @return the number of steps between actions
-     */
-    @Override
-    public int getCoolDownPeriod() {
-        return cooldown;
-    }
-
-    /**
-     * Returns the next action to be taken, given the current state of the
-     * world.
-     *
-     * @param world the current world
-     * @return the next action of this Actor as a {@link Command}
-     */
-    @Override
-    public Command getNextAction(World world) {
-        Direction dir = direction;
-        Location targetLocation = new Location(this.getLocation(), dir);
-        Set<Item> items = world.searchSurroundings(location, VIEW_RANGE);
-        this.energy--; // Loses 1 energy regardless of action.
-
-        for(Item i : items){
-            if(i.getClass().equals(GasStation.class)){
-                cooldown += 2;
-
-                if(cooldown > 10 && energy < MAX_ENERGY / 10){
-                    energy = MAX_ENERGY;
-                }
-            }
-        }
-
-        if (Util.isValidLocation(world, targetLocation) &&
-                Util.isLocationEmpty(world, targetLocation)) {
-            if(cooldown > 1){
-                cooldown--;
-            }
-            return new MoveCommand(this, targetLocation);//move forward and accelerate if nothing in front
-        }else if(cooldown > 10){
-            direction = Util.getRandomDirection();//change direction if slow enough
-            return new WaitCommand();
-        }else {
-            for(Item i : items){
-                if(i.getLocation().equals(targetLocation)){
-                    if(cooldown < MAX_COOLDOWN){
-                        cooldown++;
-                    }
-
-                    return new DestroyCommand(this, i);//hit the obstacle and slow down
-                }
-            }
-        }
-
-        direction = Util.getRandomDirection();
-
-        return new WaitCommand();
     }
 }

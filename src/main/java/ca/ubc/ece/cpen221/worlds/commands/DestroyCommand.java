@@ -2,19 +2,16 @@ package ca.ubc.ece.cpen221.worlds.commands;
 
 import ca.ubc.ece.cpen221.worlds.World;
 import ca.ubc.ece.cpen221.worlds.items.Item;
-import ca.ubc.ece.cpen221.worlds.items.LivingItem;
 import ca.ubc.ece.cpen221.worlds.items.vehicles.Vehicle;
 
-import java.util.Set;
-
 public class DestroyCommand implements Command {
-    private final Vehicle v1;
-    private final Item v2;
+    private final Vehicle vehicle;
+    private final Item item;
 
 
-    public DestroyCommand(Vehicle v1, Item v2) {
-        this.v1 = v1;
-        this.v2 = v2;
+    public DestroyCommand(Vehicle vehicle, Item item) {
+        this.vehicle = vehicle;
+        this.item = item;
     }
 
     /**
@@ -27,14 +24,14 @@ public class DestroyCommand implements Command {
      */
     @Override
     public void execute(World world) throws InvalidCommandException {
-        if (v1.getLocation().getDistance(v2.getLocation()) != 1) {
+        if (vehicle.getLocation().getDistance(item.getLocation()) != 1) {
             throw new InvalidCommandException("Invalid EatCommand: Vehicles not adjacent");
         }
 
-        if (v1.getStrength() < v2.getStrength()) {
-            v1.loseEnergy(Integer.MAX_VALUE);
+        if (vehicle.getStrength() < item.getStrength()) {
+            vehicle.loseEnergy(Integer.MAX_VALUE);
         }else{
-            v2.loseEnergy(Integer.MAX_VALUE);
+            item.loseEnergy(Integer.MAX_VALUE);
         }
     }
 }

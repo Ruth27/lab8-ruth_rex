@@ -17,13 +17,15 @@ import ca.ubc.ece.cpen221.worlds.items.animals.Gnat;
 
 import javax.swing.*;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class AbstractVehicle implements Vehicle{
     protected int MAX_ENERGY;
     protected int STRENGTH;
 
-    protected static final int VIEW_RANGE = 10;
-    protected static final int MAX_COOLDOWN = 15;
+    protected static final int VIEW_RANGE = 3;
+    protected static final int MAX_COOLDOWN = 10;
+    protected static final int TURNING_SPEED = 5;
 
     protected Location location;
     protected int energy;
@@ -162,23 +164,33 @@ public abstract class AbstractVehicle implements Vehicle{
             }
         }
 
-        if (Util.isValidLocation(world, targetLocation) &&
-                Util.isLocationEmpty(world, targetLocation)) {
-            if(cooldown > 1){
-                cooldown--;
+        if (Util.isValidLocation(world, targetLocation) && Util.isLocationEmpty(world, targetLocation)) {
+            if(ThreadLocalRandom.current().nextInt(0, 10) < 4 && cooldown > 1){//slow down or speed up randomly
+                cooldown --;
+            }else if (ThreadLocalRandom.current().nextInt(0, 10) < 4 && cooldown < MAX_COOLDOWN){
+                cooldown ++;
             }
+
+            if(cooldown > TURNING_SPEED){
+                direction =Util.getRandomDirection();
+            }
+
             return new MoveCommand(this, targetLocation);//move forward and accelerate if nothing in front
-        }else if(cooldown > 10){
-            direction = Util.getRandomDirection();//change direction if slow enough
-            return new WaitCommand();
         }else {
             for(Item i : items){
                 if(i.getLocation().equals(targetLocation)){
-                    if(cooldown < MAX_COOLDOWN){
-                        cooldown++;
+                    if(!(i instanceof Grass) && !(i instanceof Gnat)){//not slowing down or turning for grass and gnat
+                        if(cooldown > TURNING_SPEED) {
+                            direction = Util.getRandomDirection();//change direction if slow enough
+                            cooldown--;
+
+                            return new WaitCommand();
+                        }else{
+                            cooldown += 2;
+                        }
                     }
 
-                    return new DestroyCommand(this, i);//hit the obstacle and slow down
+                    return new DestroyCommand(this, i);//hit the obstacle
                 }
             }
         }

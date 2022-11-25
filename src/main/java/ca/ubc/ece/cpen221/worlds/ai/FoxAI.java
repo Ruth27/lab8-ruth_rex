@@ -4,14 +4,13 @@ import ca.ubc.ece.cpen221.worlds.ArenaWorld;
 import ca.ubc.ece.cpen221.worlds.Direction;
 import ca.ubc.ece.cpen221.worlds.Location;
 import ca.ubc.ece.cpen221.worlds.Util;
-import ca.ubc.ece.cpen221.worlds.commands.Command;
-import ca.ubc.ece.cpen221.worlds.commands.EatCommand;
-import ca.ubc.ece.cpen221.worlds.commands.MoveCommand;
-import ca.ubc.ece.cpen221.worlds.commands.WaitCommand;
+import ca.ubc.ece.cpen221.worlds.commands.*;
 import ca.ubc.ece.cpen221.worlds.items.Item;
 import ca.ubc.ece.cpen221.worlds.items.animals.ArenaAnimal;
 
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
+
 
 /**
  * Your Fox AI.
@@ -39,8 +38,14 @@ public class FoxAI extends AbstractAI {
         }
         if (Util.isValidLocation(world, targetLocation)
             && this.isLocationEmpty(world, animal, targetLocation)) {
+
+            if(animal.getEnergy() >= animal.getMinimumBreedingEnergy() && ThreadLocalRandom.current().nextInt(0,10) < 1){
+                return new BreedCommand(animal, targetLocation);
+            }
+
             return new MoveCommand(animal, targetLocation);
         }
+
         return new WaitCommand();
     }
 

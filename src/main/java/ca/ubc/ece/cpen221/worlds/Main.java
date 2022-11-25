@@ -1,16 +1,20 @@
 package ca.ubc.ece.cpen221.worlds;
 
+
 import ca.ubc.ece.cpen221.worlds.ai.CatAI;
 import ca.ubc.ece.cpen221.worlds.ai.FoxAI;
 import ca.ubc.ece.cpen221.worlds.ai.RabbitAI;
 import ca.ubc.ece.cpen221.worlds.core.WorldImpl;
 import ca.ubc.ece.cpen221.worlds.core.WorldUI;
 import ca.ubc.ece.cpen221.worlds.items.Gardener;
+import ca.ubc.ece.cpen221.worlds.items.GasStation;
 import ca.ubc.ece.cpen221.worlds.items.Grass;
-import ca.ubc.ece.cpen221.worlds.items.animals.Cat;
 import ca.ubc.ece.cpen221.worlds.items.animals.Fox;
 import ca.ubc.ece.cpen221.worlds.items.animals.Gnat;
 import ca.ubc.ece.cpen221.worlds.items.animals.Rabbit;
+import ca.ubc.ece.cpen221.worlds.items.vehicles.Car;
+import ca.ubc.ece.cpen221.worlds.items.vehicles.Truck;
+import ca.ubc.ece.cpen221.worlds.items.animals.Cat;
 
 import javax.swing.SwingUtilities;
 
@@ -28,7 +32,9 @@ public class Main {
     static final int INITIAL_GRASS = X_DIM * Y_DIM / SPACES_PER_GRASS;
     static final int INITIAL_GNATS = INITIAL_GRASS / 4;
     static final int INITIAL_RABBITS = INITIAL_GRASS / 4;
+
     static final int INITIAL_CATS = INITIAL_GRASS / 4;
+
     static final int INITIAL_FOXES = INITIAL_GRASS / 32;
     static final int INITIAL_TIGERS = INITIAL_GRASS / 32;
     static final int INITIAL_BEARS = INITIAL_GRASS / 40;
@@ -39,6 +45,7 @@ public class Main {
     static final int INITIAL_MEN = INITIAL_GRASS / 150;
     static final int INITIAL_WOMEN = INITIAL_GRASS / 100;
     static final int INITIAL_HUNTERS = INITIAL_GRASS / 150;
+    static final int INITIAL_GAS = INITIAL_GRASS / 100;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -62,7 +69,13 @@ public class Main {
         addGnats(world);
         addRabbits(world);
         addFoxes(world);
+
         addCats(world);
+
+        addCars(world);
+        addTrucks(world);
+        addGasStation(world);
+
         // TODO: You may add your own creatures here!
     }
 
@@ -109,6 +122,31 @@ public class Main {
             Rabbit rabbit = new Rabbit(rabbitAI, loc);
             world.addItem(rabbit);
             world.addActor(rabbit);
+        }
+    }
+
+    private void addCars(World world) {
+        for (int i = 0; i < INITIAL_CARS; i++) {
+            Location loc = Util.getRandomEmptyLocation(world);
+            Car car = new Car(loc);
+            world.addItem(car);
+            world.addActor(car);
+        }
+    }
+
+    private void addTrucks(World world) {
+        for (int i = 0; i < INITIAL_TRUCKS; i++) {
+            Location loc = Util.getRandomEmptyLocation(world);
+            Truck truck = new Truck(loc);
+            world.addItem(truck);
+            world.addActor(truck);
+        }
+    }
+
+    private void addGasStation(World world) {
+        for (int i = 0; i < INITIAL_GAS; i++) {
+            Location loc = Util.getRandomEmptyLocation(world);
+            world.addItem(new GasStation(loc));
         }
     }
 }

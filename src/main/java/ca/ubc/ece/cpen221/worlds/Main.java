@@ -33,7 +33,7 @@ public class Main {
     static final int INITIAL_GNATS = INITIAL_GRASS / 4;
     static final int INITIAL_RABBITS = INITIAL_GRASS / 4;
 
-    static final int INITIAL_CATS = INITIAL_GRASS / 4;
+    static final int INITIAL_CATS = INITIAL_GRASS / 16;
 
     static final int INITIAL_FOXES = INITIAL_GRASS / 32;
     static final int INITIAL_TIGERS = INITIAL_GRASS / 32;
@@ -64,7 +64,9 @@ public class Main {
 
     public void initialize(World world) {
         addGrass(world);
-        world.addActor(new Gardener());
+
+        for(int i = 0; i < 5; i++)
+            world.addActor(new Gardener());
 
         addGnats(world);
         addRabbits(world);

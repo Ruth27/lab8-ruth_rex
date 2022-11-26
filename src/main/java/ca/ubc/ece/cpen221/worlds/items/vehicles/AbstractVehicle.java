@@ -156,7 +156,7 @@ public abstract class AbstractVehicle implements Vehicle{
 
         for(Item i : items){
             if(i.getClass().equals(GasStation.class)){
-                cooldown += 2;
+                cooldown += 1;
 
                 if(cooldown > 10 && energy < MAX_ENERGY / 10){
                     energy = MAX_ENERGY;
@@ -173,6 +173,8 @@ public abstract class AbstractVehicle implements Vehicle{
 
             if(cooldown > TURNING_SPEED){
                 direction =Util.getRandomDirection();
+
+                cooldown --;
             }
 
             return new MoveCommand(this, targetLocation);//move forward and accelerate if nothing in front
@@ -182,7 +184,7 @@ public abstract class AbstractVehicle implements Vehicle{
                     if(!(i instanceof Grass) && !(i instanceof Gnat)){//not slowing down or turning for grass and gnat
                         if(cooldown > TURNING_SPEED) {
                             direction = Util.getRandomDirection();//change direction if slow enough
-                            cooldown--;
+                            cooldown -= 2;
 
                             return new WaitCommand();
                         }else{

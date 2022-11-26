@@ -5,7 +5,10 @@ import ca.ubc.ece.cpen221.worlds.ai.AI;
 import ca.ubc.ece.cpen221.worlds.commands.Command;
 import ca.ubc.ece.cpen221.worlds.commands.MoveCommand;
 import ca.ubc.ece.cpen221.worlds.commands.WaitCommand;
+import ca.ubc.ece.cpen221.worlds.items.Grass;
 import ca.ubc.ece.cpen221.worlds.items.LivingItem;
+import ca.ubc.ece.cpen221.worlds.items.MoveableItem;
+import ca.ubc.ece.cpen221.worlds.items.vehicles.Vehicle;
 
 import javax.swing.*;
 
@@ -61,14 +64,18 @@ public class Cat implements ArenaAnimal {
         // The Cat selects a random direction and check if the next location at
         // the direction is valid and empty. If yes, then it moves to the
         // location, otherwise it waits.
-        Direction dir = Util.getRandomDirection();
-        Location targetLocation = new Location(this.getLocation(), dir);
-        if (Util.isValidLocation(world, targetLocation)
-            && Util.isLocationEmpty(world, targetLocation)) {
-            return new MoveCommand(this, targetLocation);
-        }
+//        Direction dir = Util.getRandomDirection();
+//        Location targetLocation = new Location(this.getLocation(), dir);
+//        if (Util.isValidLocation(world, targetLocation)
+//            && Util.isLocationEmpty(world, targetLocation)) {
+//            return new MoveCommand(this, targetLocation);
+//        }
+//
+//        return new WaitCommand();
 
-        return new WaitCommand();
+        Command nextAction = ai.getNextAction(world, this);
+        this.energy--; // Loses 1 energy regardless of action.
+        return nextAction;
     }
 
     /**

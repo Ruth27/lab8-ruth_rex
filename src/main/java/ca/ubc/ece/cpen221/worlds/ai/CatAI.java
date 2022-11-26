@@ -35,7 +35,7 @@ public class CatAI extends AbstractAI {
         if (Util.isValidLocation(world, targetLocation)
             && this.isLocationEmpty(world, animal, targetLocation)) {
 
-            if(animal.getEnergy() >= animal.getMinimumBreedingEnergy() && ThreadLocalRandom.current().nextInt(0,10) < 1){
+            if(animal.getEnergy() >= animal.getMinimumBreedingEnergy() && ThreadLocalRandom.current().nextInt(0,100) < 10){
                 return new BreedCommand(animal, targetLocation);
             }
 

@@ -38,7 +38,7 @@ public class RabbitAI extends AbstractAI {
         if (Util.isValidLocation(world, targetLocation)
             && this.isLocationEmpty(world, animal, targetLocation)) {
 
-            if(animal.getEnergy() >= animal.getMinimumBreedingEnergy() && ThreadLocalRandom.current().nextInt(0,10) < 2){
+            if(animal.getEnergy() >= animal.getMinimumBreedingEnergy() && ThreadLocalRandom.current().nextInt(0,100) < 20){
                 return new BreedCommand(animal, targetLocation);
             }
 
